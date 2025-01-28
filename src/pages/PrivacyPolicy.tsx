@@ -74,10 +74,10 @@ const PrivacyPolicy = () => {
               If you have any questions about this Privacy Policy, please contact me through the
               contact form on this website or via email at:
               <a
-                href="mailto:nasir.mirza@example.com"
+                href="nmirza001@csbsju.edu"
                 className="text-stone-800 hover:text-stone-600 ml-2 transition-colors duration-300"
               >
-                nasir.mirza@example.com
+                nmirza001@csbsju.edu
               </a>
             </p>
           </section>
