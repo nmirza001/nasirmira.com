@@ -6,12 +6,14 @@ import { Github, ExternalLink, Code, Database, LineChart, Search } from 'lucide-
 import { useDebounce, useIntersectionObserver } from '../hooks/';
 import { PageProps } from '../types/common';
 
+type ProjectCategory = 'frontend' | 'backend' | 'fullstack' | 'data';
+
 interface Project {
   id: string;
   title: string;
   description: string;
   technologies: string[];
-  category: 'frontend' | 'backend' | 'fullstack' | 'data';
+  category: ProjectCategory;
   githubUrl?: string;
   liveUrl?: string;
   image?: string;
@@ -87,40 +89,51 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
 
 const ProjectsPage: React.FC<PageProps> = () => {
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState<string>('all');
+  const [selectedCategory, setSelectedCategory] = useState<ProjectCategory | 'all'>('all');
   const debouncedSearch = useDebounce(searchQuery, 300);
 
-  // Sample projects data - in production, this would come from an API
-  const projects: Project[] = [
-    {
-      id: '1',
-      title: 'Finance Analytics Dashboard',
-      description:
-        'A real-time dashboard for tracking financial metrics and market trends using React and D3.js.',
-      technologies: ['React', 'TypeScript', 'D3.js', 'Tailwind CSS'],
-      category: 'frontend',
-      githubUrl: 'https://github.com/username/finance-dashboard',
-      liveUrl: 'https://finance-dashboard.demo',
-      image: '/projects/finance-dashboard.jpg',
-    },
-    {
-      id: '2',
-      title: 'Trading Algorithm Backend',
-      description:
-        'High-performance backend system for algorithmic trading with real-time market data processing.',
-      technologies: ['Python', 'FastAPI', 'PostgreSQL', 'Redis'],
-      category: 'backend',
-      githubUrl: 'https://github.com/username/trading-algorithm',
-    },
-    // Add more projects...
+  const categories = [
+    { id: 'all' as const, label: 'All Projects', icon: Code },
+    { id: 'frontend' as const, label: 'Frontend', icon: Code },
+    { id: 'backend' as const, label: 'Backend', icon: Database },
+    { id: 'data' as const, label: 'Data Science', icon: LineChart },
   ];
 
-  const categories = [
-    { id: 'all', label: 'All Projects', icon: Code },
-    { id: 'frontend', label: 'Frontend', icon: Code },
-    { id: 'backend', label: 'Backend', icon: Database },
-    { id: 'data', label: 'Data Science', icon: LineChart },
-  ];
+  const projects = useMemo<Project[]>(
+    () => [
+      {
+        id: '1',
+        title: 'Finance Analytics Dashboard',
+        description:
+          'A real-time dashboard for tracking financial metrics and market trends using React and D3.js.',
+        technologies: ['React', 'TypeScript', 'D3.js', 'Tailwind CSS'],
+        category: 'frontend',
+        githubUrl: 'https://github.com/username/finance-dashboard',
+        liveUrl: 'https://finance-dashboard.demo',
+        image: '/projects/finance-dashboard.jpg',
+      },
+      {
+        id: '2',
+        title: 'Trading Algorithm Backend',
+        description:
+          'High-performance backend system for algorithmic trading with real-time market data processing.',
+        technologies: ['Python', 'FastAPI', 'PostgreSQL', 'Redis'],
+        category: 'backend',
+        githubUrl: 'https://github.com/username/trading-algorithm',
+      },
+      {
+        id: '3',
+        title: 'Advanced Sentiment Analysis Model',
+        description:
+          'A sophisticated NLP model for sentiment analysis on product and service reviews, achieving 61.95% overall accuracy with 100% precision on edge cases.',
+        technologies: ['Python', 'NLTK', 'Scikit-learn', 'TF-IDF', 'Logistic Regression'],
+        category: 'data',
+        githubUrl: 'https://github.com/nmirza001/NLPStockAn',
+        image: '/projects/sentiment-analysis.jpg',
+      },
+    ],
+    []
+  );
 
   const filteredProjects = useMemo(() => {
     return projects.filter((project) => {
@@ -153,10 +166,8 @@ const ProjectsPage: React.FC<PageProps> = () => {
           </p>
         </motion.div>
 
-        {/* Filters */}
         <div className="mb-12">
           <div className="flex flex-col md:flex-row gap-6 md:items-center justify-between">
-            {/* Search */}
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-stone-400 w-5 h-5" />
               <input
@@ -168,7 +179,6 @@ const ProjectsPage: React.FC<PageProps> = () => {
               />
             </div>
 
-            {/* Category filters */}
             <div className="flex flex-wrap gap-3">
               {categories.map(({ id, label, icon: Icon }) => (
                 <button
@@ -188,7 +198,6 @@ const ProjectsPage: React.FC<PageProps> = () => {
           </div>
         </div>
 
-        {/* Projects Grid */}
         <AnimatePresence mode="wait">
           {filteredProjects.length > 0 ? (
             <motion.div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" layout>
