@@ -1,7 +1,10 @@
+// src/App.tsx
 import React, { useState, useEffect } from 'react';
 
 import { useMediaQuery } from 'react-responsive';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
+
+import { AnimatePresence } from 'framer-motion';
 
 // Components
 import ErrorBoundary from './components/ErrorBoundary';
@@ -18,6 +21,29 @@ import Skills from './pages/Skills';
 import TermsOfService from './pages/TermsOfService';
 // Types
 import { PageProps } from './types/common';
+
+// Create a separate component for AnimatePresence to access useLocation
+interface AnimatedRoutesProps {
+  pageProps: PageProps;
+}
+
+const AnimatedRoutes: React.FC<AnimatedRoutesProps> = ({ pageProps }) => {
+  const location = useLocation();
+
+  return (
+    <AnimatePresence mode="wait">
+      <Routes location={location} key={location.pathname}>
+        <Route path="/" element={<Home {...pageProps} />} />
+        <Route path="/about" element={<About {...pageProps} />} />
+        <Route path="/projects" element={<Projects {...pageProps} />} />
+        <Route path="/skills" element={<Skills {...pageProps} />} />
+        <Route path="/contact" element={<Contact {...pageProps} />} />
+        <Route path="/privacy" element={<PrivacyPolicy />} />
+        <Route path="/terms" element={<TermsOfService />} />
+      </Routes>
+    </AnimatePresence>
+  );
+};
 
 const App: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -49,15 +75,7 @@ const App: React.FC = () => {
           <Navigation {...pageProps} />
 
           <main className="flex-grow">
-            <Routes>
-              <Route path="/" element={<Home {...pageProps} />} />
-              <Route path="/about" element={<About {...pageProps} />} />
-              <Route path="/projects" element={<Projects {...pageProps} />} />
-              <Route path="/skills" element={<Skills {...pageProps} />} />
-              <Route path="/contact" element={<Contact {...pageProps} />} />
-              <Route path="/privacy" element={<PrivacyPolicy />} />
-              <Route path="/terms" element={<TermsOfService />} />
-            </Routes>
+            <AnimatedRoutes pageProps={pageProps} />
           </main>
 
           <Footer />

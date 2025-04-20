@@ -1,3 +1,4 @@
+// src/pages/Home.tsx
 import React, { useEffect, useState } from 'react';
 
 import { Link } from 'react-router-dom';
@@ -7,6 +8,7 @@ import { ArrowRight, Code, Database, LineChart } from 'lucide-react';
 
 import { PageProps } from '@/types/common';
 
+import DeveloperScene from '../components/DeveloperScene';
 import Loading from '../components/Loading';
 import { useIntersectionObserver } from '../hooks';
 
@@ -92,6 +94,9 @@ const HomePage: React.FC<PageProps> = () => {
   return (
     <AnimatePresence mode="wait">
       <div className="min-h-screen bg-white">
+        {/* Add Developer Scene */}
+        <DeveloperScene />
+
         {/* Hero Section */}
         <motion.section
           role="banner"

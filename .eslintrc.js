@@ -25,14 +25,7 @@ module.exports = {
     ecmaVersion: 12,
     sourceType: 'module',
   },
-  plugins: [
-    'react',
-    '@typescript-eslint',
-    'jsx-a11y',
-    'react-hooks',
-    'prettier',
-    'import',
-  ],
+  plugins: ['react', '@typescript-eslint', 'jsx-a11y', 'react-hooks', 'prettier', 'import'],
   settings: {
     react: {
       version: 'detect',
@@ -71,37 +64,68 @@ module.exports = {
           'internal',
           ['parent', 'sibling', 'index'],
           'type',
-          'object'
+          'object',
         ],
         pathGroups: [
           {
             pattern: 'react',
             group: 'external',
-            position: 'before'
+            position: 'before',
           },
           {
             pattern: 'react-*',
             group: 'external',
-            position: 'before'
+            position: 'before',
           },
           {
             pattern: '@/**',
             group: 'internal',
-            position: 'after'
-          }
+            position: 'after',
+          },
         ],
         pathGroupsExcludedImportTypes: ['react', 'react-*'],
         'newlines-between': 'always',
         alphabetize: {
           order: 'asc',
-          caseInsensitive: true
-        }
-      }
+          caseInsensitive: true,
+        },
+      },
     ],
     'react/no-unescaped-entities': [
       'error',
       {
         forbid: ['>', '}'],
+      },
+    ],
+    'react/no-unknown-property': [
+      'error',
+      {
+        ignore: [
+          'position',
+          'rotation',
+          'args',
+          'castShadow',
+          'intensity',
+          'metalness',
+          'roughness',
+          'emissive',
+          'emissiveIntensity',
+          'angle',
+          'penumbra',
+          'scale',
+          'far',
+          'near',
+          'blur',
+          'opacity',
+          'makeDefault',
+          'fov',
+          'shadows',
+          'receiveShadow',
+          'object',
+          'geometry',
+          'material',
+          'dpr',
+        ],
       },
     ],
   },
